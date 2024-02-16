@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Create Docker Image Using our war file
+    command: docker build -t image-name .
+    args:
+      chdir: /opt/k8
+
+  - name: Tag the image
+    command: docker tag image-name username_of_dockerhub/image-name
+
+  - name: Push the image into our DockerHub registry
+    command: docker push username_of_dockerhub/image-name
+
+  - name: Removing Docker images from Ansible server
+    command: docker rmi -f username_of_dockerhub/image-name image-name
+    ignore_errors: yes
